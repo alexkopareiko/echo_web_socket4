@@ -6,7 +6,7 @@ export default class App extends Component {
 
 showList() {
   return (
-    <div>
+    <div className="div_main">
       <h3>Chat on Websocket</h3>
       <Start />
     </div>

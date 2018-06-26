@@ -1,7 +1,7 @@
 //import actions from './actions/index'
 //import { connected } from './actions/index';
 
-import {connected, disconnected, messageReceived, connecting} from './actions/index'
+import {connected, disconnected, messageReceived, connecting, send_and_save} from './actions/index'
 
 const socketMiddleware = (function(){
   var socket = null;
@@ -20,8 +20,16 @@ const socketMiddleware = (function(){
 
   const onMessage = (ws,store) => evt => {
     //Parse the JSON message received on the websocket
-    var msg = evt.data;
-    console.log(msg);
+    //var msg = evt.data;
+    //console.log(msg);
+    let today = new Date(),
+        date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + ' (' + today.getHours() + ':' + today.getMinutes() + ')';
+    let msg = {
+      id: Date.now().toString(),
+      author: 'Echo-Bot',
+      text: evt.data,
+      time: date
+    }
     store.dispatch(messageReceived(msg));
     /*var msg = JSON.parse(evt.data);
     switch(msg.type) {
@@ -70,6 +78,15 @@ const socketMiddleware = (function(){
       //Send the 'SEND_MESSAGE' action down the websocket to the server
       case 'SEND_CHAT_MESSAGE':
         socket.send(action.payload);
+        let today = new Date(),
+            date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + ' (' + today.getHours() + ':' + today.getMinutes() + ')';
+        let msg = {
+          id: Date.now().toString(),
+          author: 'Me',
+          text: action.payload,
+          time: date
+        }
+        store.dispatch(send_and_save(msg));
         break;
 
       //This action is irrelevant to us, pass it on to the next middleware

@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {connect_ws, disconnect_ws, send_ws} from '../actions/index';
 import { Button } from 'semantic-ui-react';
+import Chat from './Chat'
 
 class Start extends Component {
 
@@ -13,14 +14,15 @@ class Start extends Component {
      this.btnHandlerSend = this.btnHandlerSend.bind(this);
 
      this.state = {
-
+       inputField: ""
 
      }
    }
 
    componentDidMount() {
 
-    //console.log(this.refs._ref.value);
+       window.scrollTo(0, 0);
+
   }
 
 
@@ -39,24 +41,29 @@ class Start extends Component {
 
   btnHandlerSend(e) {
     e.preventDefault();
-    console.log(this.props);
-    this.props.actions.send_ws(this.refs._ref.value);
+    if(this.refs._ref.value!='')
+      this.props.actions.send_ws(this.refs._ref.value);
+    this.refs._ref.value = '';
+    this.refs._ref.focus();
 
   }
 
   showList() {
     return (
       <div>
-        <Button onClick={e => this.btnHandlerOn(e)}>Connect</Button>
-        <Button onClick={e => this.btnHandlerOff(e)}>Disconnect</Button>
-
+      {console.log(this.props)}
+        <Button onClick={e => this.btnHandlerOn(e)} disabled={this.props.connectState != 'connected' ? false: true}>Connect</Button>
+        <Button onClick={e => this.btnHandlerOff(e)} disabled={this.props.connectState == 'connected' ? false: true}>Disconnect</Button>
+        <div className="div_chat">
+          <Chat />
+        </div>
         <div className="ui form">
 
           <div className="field">
-            <label>Short Text</label>
-            <textarea rows="2" ref='_ref'></textarea>
+            <label></label>
+            <textarea rows="2" ref='_ref' placeholder="Feel free to write..."></textarea>
           </div>
-          <Button onClick={e => this.btnHandlerSend(e)} >Send</Button>
+          <Button onClick={e => this.btnHandlerSend(e)} disabled={this.props.connectState == 'connected' ? false: true}>Send</Button>
         </div>
 
       </div>
@@ -76,7 +83,7 @@ class Start extends Component {
 function mapStateToProps (state) {
 
   return  {
-    connectState: state
+    connectState: state.status
   };
 
 }

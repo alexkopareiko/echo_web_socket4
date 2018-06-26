@@ -1,31 +1,22 @@
-const initialState = ['TRA-TA-TA'];
+const initialState = [
+  {
+    id: 1,
+    author: 'Me',
+    text: 'tra-ta-ta',
+    time: '2018-6-26 (11:16)'
+  },
+  {
+    id: 2,
+    author: 'Echo-Bot',
+    text: 'tra-ta-ta',
+    time: '2018-6-26 (11:16)'
+  }
+];
 
 export default function connectReducer(state = initialState, action) {
 switch(action.type) {
 
-  /*case "CONNECT":
-  return [
-    state
-  ]
-    break;
 
-    case "DISCONNECT":
-    return [
-      state
-    ]
-      break;*/
-
-    case "CONNECTED":
-    return [
-      state
-    ]
-      break;
-
-    case "DISCONNECTED":
-    return [
-      state
-    ]
-      break;
 
     case "MSG_RECEIVED":
     return [
@@ -34,9 +25,18 @@ switch(action.type) {
     ]
       break;
 
-    case "CONNECTING":
+    case "SEND_CHAT_MESSAGE":
     return [
-      state
+      ...state,
+      action.payload
+    ]
+      break;
+
+
+    case "SEND_CHAT_MESSAGE_AND_SAVE":
+    return [
+      ...state,
+      action.payload
     ]
       break;
 

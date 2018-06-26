@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux';
 import connectReducer from './connectReducer';
+import status from './status';
 
 const allReducers = combineReducers ({
-  connectTest: connectReducer
+  chatbox: connectReducer,
+  status: status
 });
 
 export default allReducers
